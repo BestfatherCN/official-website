@@ -680,24 +680,29 @@ a.app-product-card {
             letter-spacing: 0.5px;
         }
 
-        .game-card .game-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--color-accent);
-            color: #fff;
-            font-size: 0.65rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.5);
-            animation: badgePulse 2.5s ease-in-out infinite;
-        }
+.game-card .game-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    /* 长条胶囊形状 */
+    width: auto;
+    height: auto;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: rgba(0, 0, 0, 0.65);   /* 半透明黑底，适合各种图片 */
+    color: #ffffff;
+    z-index: 3;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    /* 不再使用原来的 pulse 动画 */
+    animation: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
 
         @keyframes badgePulse {
             0%,
@@ -978,13 +983,13 @@ a.app-product-card {
             .game-card .game-info {
                 padding: 8px 6px 10px;
             }
-            .game-card .game-badge {
-                width: 18px;
-                height: 18px;
-                font-size: 0.6rem;
-                top: 5px;
-                right: 5px;
-            }
+.game-card .game-badge {
+    top: 5px;
+    right: 5px;
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 16px;
+}
 
             /* Section标题 */
             .section-title {
@@ -1260,6 +1265,100 @@ a.app-product-card {
     background: #27ae60;
     pointer-events: none;
 }
+/* ========== 协议弹窗样式 ========== */
+.policy-dialog {
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+.policy-content {
+    overflow-y: auto;
+    padding-right: 8px;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #2d3436;
+    max-height: 50vh;
+}
+.policy-content p {
+    margin-bottom: 14px;
+}
+/* 滚动条美化（协议内容区域） */
+.policy-content::-webkit-scrollbar {
+    width: 5px;
+}
+.policy-content::-webkit-scrollbar-thumb {
+    background: #c0c7cf;
+    border-radius: 3px;
+}
+/* ========== 关于我们弹窗样式 ========== */
+.about-dialog {
+    max-width: 480px;
+    text-align: center;
+}
+.about-header {
+    margin-bottom: 20px;
+}
+.about-logo {
+    width: 220px;
+    height: auto;
+    border-radius: 20px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+.about-company-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2d3436;
+    letter-spacing: 1px;
+}
+.about-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+.info-label {
+    font-weight: 600;
+    color: #636e72;
+    font-size: 0.9rem;
+}
+.info-value {
+    color: #2d3436;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-align: right;
+}
+.about-map {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.map-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+@media (max-width: 768px) {
+    .about-dialog {
+        padding: 20px 16px 16px;
+    }
+    .about-logo {
+        width: 220px;
+    height: auto;
+    }
+    .about-company-name {
+        font-size: 1.4rem;
+    }
+}
   </style>
 </head>
 <body>
@@ -1286,7 +1385,7 @@ a.app-product-card {
         <a href="#game-list" class="header-nav-link" data-toast="Game Center">Game Center</a>
     </li>
     <li class="header-nav-item">
-        <a href="#footer" class="header-nav-link" data-toast="About Us">About Us</a>
+<a href="#" class="header-nav-link js-about-trigger" data-toast="About Us">About Us</a>
     </li>
 </ul>
         </nav>
@@ -1306,7 +1405,7 @@ a.app-product-card {
     <a href="#" class="mobile-nav-link active" data-toast="Home">🏠 Home</a>
     <a href="#app-products" class="mobile-nav-link" data-toast="Premium APP">📱 Premium APP</a>
     <a href="#game-list" class="mobile-nav-link" data-toast="Game Center">🎮 Game Center</a>
-    <a href="#footer" class="mobile-nav-link" data-toast="About Us">ℹ️ About Us</a>
+<a href="#" class="mobile-nav-link js-about-trigger" data-toast="About Us">ℹ️ About Us</a>
 </div>
 
     <!-- ==================== 中间主内容区 Main ==================== -->
@@ -1410,101 +1509,147 @@ evolution and destroy all humans!</p>
                 </div>
                 <div class="games-grid">
                     <!-- 游戏卡片 1 -->
-<article class="game-card" data-url="https://www.yingyongbao.com/app/xxxxx">
+<article class="game-card" data-url="https://apps.apple.com/us/app/survival-store-idle/id6464371176">
     <div class="game-icon-block">
-        <img src="images/poster1.jpg" alt="暗影之刃" style="width:100%; height:100%; object-fit: cover; display: block;">
+        <img src="images/game01.jpg" alt="Survival Store ldle" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-    <span class="game-badge">热</span>
     <div class="game-info">
-        <div class="g-name">暗影之刃</div>
-        <div class="g-type">动作RPG</div>
+        <div class="g-name">Survival Store ldle</div>
+        <div class="g-type">ldle Game</div>
     </div>
 </article>
 
                     <!-- 游戏卡片 2 -->
-<article class="game-card" data-url="https://www.yingyongbao.com/app/xxxxx">
+<article class="game-card" data-url="https://play.google.com/store/apps/details?id=com.trivia.game.cash">
     <div class="game-icon-block">
-        <img src="images/poster2.jpg" alt="暗影之刃" style="width:100%; height:100%; object-fit: cover; display: block;">
+        <img src="images/game02.jpg" alt="Trivia Cash" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-    <span class="game-badge">热</span>
     <div class="game-info">
-        <div class="g-name">暗影之刃</div>
-        <div class="g-type">动作RPG</div>
+        <div class="g-name">Trivia Cash</div>
+        <div class="g-type">Knowledge Quiz</div>
     </div>
 </article>
 
                     <!-- 游戏卡片 3 -->
-<article class="game-card" data-url="https://www.yingyongbao.com/app/xxxxx">
+<article class="game-card" data-url="https://apps.apple.com/us/app/gear-click-fever-simulator-3d/id1662438755">
     <div class="game-icon-block">
-        <img src="images/poster3.jpg" alt="暗影之刃" style="width:100%; height:100%; object-fit: cover; display: block;">
+        <img src="images/game03.jpg" alt="Gear Click Fever: Simulator 3D" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-    <span class="game-badge">热</span>
     <div class="game-info">
-        <div class="g-name">暗影之刃</div>
-        <div class="g-type">动作RPG</div>
+        <div class="g-name">Gear Click Fever: Simulator 3D</div>
+        <div class="g-type">Merge games</div>
     </div>
 </article>
 
                     <!-- 游戏卡片 4 -->
-<article class="game-card" data-url="https://www.yingyongbao.com/app/xxxxx">
+<article class="game-card" data-url="https://apps.apple.com/us/app/alien-run-3d/id1672919655">
     <div class="game-icon-block">
-        <img src="images/game1.jpg" alt="暗影之刃" style="width:100%; height:100%; object-fit: cover; display: block;">
+        <img src="images/game04.jpg" alt="Alien Run 3D" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-    <span class="game-badge">热</span>
     <div class="game-info">
-        <div class="g-name">暗影之刃</div>
-        <div class="g-type">动作RPG</div>
+        <div class="g-name">Alien Run 3D</div>
+        <div class="g-type">Action Game</div>
     </div>
 </article>
 
                     <!-- 游戏卡片 5 -->
-<article class="game-card" data-url="https://www.yingyongbao.com/app/xxxxx">
+<article class="game-card">
     <div class="game-icon-block">
-        <img src="images/game2.jpg" alt="暗影之刃" style="width:100%; height:100%; object-fit: cover; display: block;">
+<span class="game-badge">Under Development</span>
+        <img src="images/game05.jpg" alt="Crazy Boom!" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-    <span class="game-badge">热</span>
     <div class="game-info">
-        <div class="g-name">暗影之刃</div>
-        <div class="g-type">动作RPG</div>
+        <div class="g-name">Crazy Boom!</div>
+        <div class="g-type">Casual Game</div>
     </div>
 </article>
 
 
                     <!-- 游戏卡片 6 -->
 
-<article class="game-card">
+<article class="game-card" data-url="https://apps.apple.com/us/app/hyper-venom/id1664656782">
     <div class="game-icon-block">
-        <img src="images/game3.jpg" alt="魔法学院" style="width:100%; height:100%; object-fit: cover; display: block;">
+
+        <img src="images/game06.jpg" alt="Hyper Venom" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
-                        <span class="game-badge">开发中...</span>
     <div class="game-info">
-        <div class="g-name">魔法学院</div>
-        <div class="g-type">休闲养成</div>
+        <div class="g-name">Hyper Venom</div>
+        <div class="g-type">Roguelike Game</div>
     </div>
 </article>
                     <!-- 游戏卡片 7 -->
 <article class="game-card">
     <div class="game-icon-block">
-        <img src="images/poster1.jpg" alt="魔法学院" style="width:100%; height:100%; object-fit: cover; display: block;">
+<span class="game-badge">Under Development</span>
+        <img src="images/game07.jpg" alt="Zombie Road" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
     <div class="game-info">
-        <div class="g-name">魔法学院</div>
-        <div class="g-type">休闲养成</div>
+        <div class="g-name">Zombie Road</div>
+        <div class="g-type">Adventure Game</div>
     </div>
 </article>
-                    </article>
+
 
                     <!-- 游戏卡片 8 -->
 <article class="game-card">
     <div class="game-icon-block">
-        <img src="images/poster2.jpg" alt="魔法学院" style="width:100%; height:100%; object-fit: cover; display: block;">
+<span class="game-badge">Under Development</span>
+        <img src="images/game08.jpg" alt="Crush Fever" style="width:100%; height:100%; object-fit: cover; display: block;">
     </div>
     <div class="game-info">
-        <div class="g-name">魔法学院</div>
-        <div class="g-type">休闲养成</div>
+        <div class="g-name">Crush Fever</div>
+        <div class="g-type">Management Game</div>
     </div>
 </article>
-                    </article>
+
+                    <!-- 游戏卡片 9 -->
+<article class="game-card">
+    <div class="game-icon-block">
+<span class="game-badge">Under Development</span>
+        <img src="images/game09.jpg" alt="Don't Crash!" style="width:100%; height:100%; object-fit: cover; display: block;">
+    </div>
+    <div class="game-info">
+        <div class="g-name">Don't Crash!</div>
+        <div class="g-type">Puzzle Game</div>
+    </div>
+</article>
+
+                    <!-- 游戏卡片 10 -->
+<article class="game-card">
+    <div class="game-icon-block">
+<span class="game-badge">Under Development</span>
+        <img src="images/game10.jpg" alt="Evolution Dinosaur Island" style="width:100%; height:100%; object-fit: cover; display: block;">
+    </div>
+    <div class="game-info">
+        <div class="g-name">Evolution Dinosaur Island</div>
+        <div class="g-type">Management Game</div>
+    </div>
+</article>
+
+                    <!-- 游戏卡片 11 -->
+<article class="game-card">
+    <div class="game-icon-block">
+<span class="game-badge">Under Development</span>
+        <img src="images/game11.jpg" alt="Super Opening" style="width:100%; height:100%; object-fit: cover; display: block;">
+    </div>
+    <div class="game-info">
+        <div class="g-name">Super Opening</div>
+        <div class="g-type">Casual Game</div>
+    </div>
+</article>
+
+                    <!-- 游戏卡片 12 -->
+<article class="game-card">
+    <div class="game-icon-block">
+<span class="game-badge">Under Development</span>
+        <img src="images/game12.jpg" alt="Merge and Mine 3D" style="width:100%; height:100%; object-fit: cover; display: block;">
+    </div>
+    <div class="game-info">
+        <div class="g-name">Merge and Mine 3D</div>
+        <div class="g-type">Merge Game</div>
+    </div>
+</article>
+
                 </div>
             </section>
  
@@ -1518,13 +1663,13 @@ evolution and destroy all humans!</p>
     <span class="btn-icon">📞</span> Contact Us
 </a>
             <span class="footer-divider"></span>
-<a href="https://www.aaaa.com" target="_blank" class="footer-btn">🔒 Privacy Policy</a>
+<a href="#" class="footer-btn" id="privacyBtn">🔒 Privacy Policy</a>
             <span class="footer-divider"></span>
-<a href="https://www.bbbb.com" target="_blank" class="footer-btn">📋 Terms of Service</a>
+<a href="#" class="footer-btn" id="termsBtn">📋 Terms of Service</a>
             <span class="footer-divider"></span>
 <a href="#" class="footer-btn" id="businessBtn">🤝 Business</a>
             <span class="footer-divider"></span>
-            <a href="#" class="footer-btn">ℹ️ About Us</a>
+<a href="#" class="footer-btn js-about-trigger" id="aboutUsFooterBtn">ℹ️ About Us</a>
         </div>
         <p class="footer-copyright">
             WGLG GAME · Create happiness · Focus on every player
@@ -1563,12 +1708,194 @@ evolution and destroy all humans!</p>
         <h3 class="modal-title">Business</h3>
         <p class="business-desc">Contact us via the email below</p>
         <div class="email-box">
-            <span class="email-text" id="emailText">business@luckychips.com</span>
+            <span class="email-text" id="emailText">huangyawen@wglg.email</span>
         </div>
         <button type="button" class="modal-submit-btn copy-btn" id="copyEmailBtn">
             📋 Copy Email
         </button>
     </div>
+</div>
+<!-- 关于我们弹窗 -->
+<div class="modal-overlay" id="aboutModal">
+    <div class="modal-dialog about-dialog">
+        <button class="modal-close" id="aboutModalClose" aria-label="关闭">✕</button>
+        <div class="about-header">
+            <img src="images/logo.png" alt="WGLG GAME Logo" class="about-logo">
+        </div>
+        <div class="about-info">
+            <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value">huangyawen@wglg.email</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Founded</span>
+                <span class="info-value">2018</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Focus</span>
+                <span class="info-value">IAA Product Development</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Team Size</span>
+                <span class="info-value">10 – 50 members</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Address</span>
+                <span class="info-value">No. 93 Guohuo East Road, Fuzhou, Fujian, China</span>
+            </div>
+        </div>
+        <div class="about-map">
+            <img src="images/dw.png" alt="Location Map" class="map-image">
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="privacyModal">
+    <div class="modal-dialog policy-dialog">
+        <button class="modal-close" id="privacyModalClose" aria-label="关闭">✕</button>
+        <h3 class="modal-title">Privacy Policy</h3>
+<div class="policy-content">
+  <p><strong>Effective Date:</strong> January 1, 2024</p>
+  <p>
+    WGLG GAME ("we," "us," or "our") operates this website (the "Site"). This
+    Privacy Policy explains how we handle any information collected when you
+    visit the Site or contact us.
+  </p>
+
+  <h4>1. Information We Collect</h4>
+  <p>
+    <strong>Contact Form Submissions.</strong> When you send us a message through
+    our "Contact Us" form or email, we collect your name, email address, and the
+    content of your message. We use this information solely to respond to your
+    inquiry and provide customer support.
+  </p>
+  <p>
+    <strong>Automatically Collected Data.</strong> Like most websites, we may
+    automatically receive standard technical information, such as your IP
+    address, browser type, and pages visited. This data is used to maintain site
+    security and analyze aggregated usage trends. It does not personally identify
+    you.
+  </p>
+
+  <h4>2. How We Use Information</h4>
+  <p>We use the information described above to:</p>
+  <ul>
+    <li>Respond to your messages and support requests;</li>
+    <li>Improve and maintain the Site;</li>
+    <li>Monitor for security and technical issues;</li>
+    <li>Comply with legal obligations.</li>
+  </ul>
+
+  <h4>3. Data Sharing</h4>
+  <p>
+    We do not sell, trade, or rent your personal information to third parties.
+    We may share data with trusted service providers who help us operate the
+    Site (e.g., hosting services), under strict confidentiality. We may also
+    disclose information if required by law.
+  </p>
+
+  <h4>4. Data Retention</h4>
+  <p>
+    We retain contact form messages and related personal data only as long as
+    needed to resolve your inquiry and for a reasonable period thereafter for
+    record-keeping purposes. Automatically collected data is retained in
+    aggregate form for analytics.
+  </p>
+
+  <h4>5. Your Rights</h4>
+  <p>
+    Depending on your location, you may have the right to request access to,
+    correction, or deletion of your personal data. To exercise these rights,
+    please contact us at
+    <strong>huangyawen@wglg.email</strong>.
+  </p>
+
+  <h4>6. Changes to This Policy</h4>
+  <p>
+    We may update this Privacy Policy from time to time. Changes will be posted
+    on this page with an updated effective date.
+  </p>
+
+  <h4>7. Contact</h4>
+  <p>
+    For any questions regarding this Privacy Policy, please contact us at
+    <strong>huangyawen@wglg.email</strong>.
+  </p>
+</div>
+    </div>
+</div>
+
+<!-- 用户协议弹窗 -->
+<div class="modal-overlay" id="termsModal">
+    <div class="modal-dialog policy-dialog">
+        <button class="modal-close" id="termsModalClose" aria-label="关闭">✕</button>
+        <h3 class="modal-title">Terms of Service</h3>
+<div class="policy-content">
+  <p><strong>Last Updated:</strong> January 1, 2024</p>
+  <p>
+    Welcome to WGLG GAME ("Company," "we," "us," or "our"). By accessing and
+    using our website (the "Site"), you agree to these Terms of Service
+    ("Terms"). If you do not agree, please discontinue use of the Site.
+  </p>
+
+  <h4>1. Use of the Site</h4>
+  <p>
+    Our Site is provided for informational purposes, allowing you to view our
+    game products and contact us. You agree to use the Site only for lawful
+    purposes and in compliance with these Terms.
+  </p>
+
+  <h4>2. Intellectual Property</h4>
+  <p>
+    All content on the Site, including text, graphics, logos, images, game
+    artwork, and the overall design, is owned by WGLG GAME or its licensors and
+    is protected by copyright and other intellectual property laws. You may not
+    reproduce, distribute, or create derivative works without our prior written
+    permission.
+  </p>
+
+  <h4>3. User Conduct</h4>
+  <p>You agree not to:</p>
+  <ul>
+    <li>Use the Site in any way that violates applicable laws or regulations;</li>
+    <li>Attempt to interfere with or disrupt the Site or its servers;</li>
+    <li>Use the Site to transmit spam, malware, or other harmful content.</li>
+  </ul>
+
+  <h4>4. Third-Party Links</h4>
+  <p>
+    The Site may contain links to third-party websites or services (such as app
+    stores). We are not responsible for the content or practices of those
+    third parties. Your interactions with them are solely between you and the
+    third party.
+  </p>
+
+  <h4>5. Disclaimer</h4>
+  <p>
+    The Site is provided on an "AS IS" and "AS AVAILABLE" basis. We make no
+    warranties, express or implied, regarding the operation of the Site or the
+    accuracy of its content.
+  </p>
+
+  <h4>6. Limitation of Liability</h4>
+  <p>
+    To the fullest extent permitted by law, WGLG GAME shall not be liable for
+    any indirect, incidental, or consequential damages arising out of your use
+    or inability to use the Site.
+  </p>
+
+  <h4>7. Changes to These Terms</h4>
+  <p>
+    We may revise these Terms at any time. Updated versions will be posted on
+    this page with a revised date. Continued use of the Site after changes
+    constitutes acceptance of the new Terms.
+  </p>
+
+  <h4>8. Contact</h4>
+  <p>
+    For any questions about these Terms, please contact us at
+    <strong>huangyawen@wglg.email</strong>.
+  </p>
+</div>    </div>
 </div>
 <script>
     (function() {
@@ -1667,7 +1994,7 @@ evolution and destroy all humans!</p>
         // cardButtons 处理（跳过弹窗按钮）
         const cardButtons = document.querySelectorAll('.card-btn, .section-more, .footer-btn');
         cardButtons.forEach(btn => {
-            if (btn.id === 'contactBtn' || btn.id === 'businessBtn') return;
+if (btn.id === 'contactBtn' || btn.id === 'businessBtn' || btn.id === 'privacyBtn' || btn.id === 'termsBtn' || btn.id === 'aboutUsFooterBtn') return;
             btn.addEventListener('click', function(e) {
                 if (this.getAttribute('href') === '#') {
                     e.preventDefault();
@@ -1690,7 +2017,7 @@ gameCards.forEach(card => {
             // 没有链接，显示开发中提示
             const nameEl = this.querySelector('.g-name');
             const gameName = nameEl ? nameEl.textContent.trim() : '游戏';
-            showToast('开发中，敬请期待！');
+            showToast('Under development, stay tuned!');
             console.log('点击了未上线游戏：' + gameName);
         }
     });
@@ -1735,11 +2062,11 @@ gameCards.forEach(card => {
                 const email = document.getElementById('email').value.trim();
                 const message = document.getElementById('message').value.trim();
                 if (!name || !email || !message) {
-                    alert('请填写所有字段');
+                    alert('Please fill in all fields.');
                     return;
                 }
                 closeContactModal();
-                showToast('您的消息已送达！');
+                showToast('Your message has been sent!');
             });
         }
 
@@ -1787,7 +2114,7 @@ gameCards.forEach(card => {
                     }, 2000);
                 };
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(email).then(copySuccess).catch(() => alert('复制失败，请手动复制：' + email));
+                    navigator.clipboard.writeText(email).then(copySuccess).catch(() => alert('Copy failed. Please copy manually.：' + email));
                 } else {
                     const textarea = document.createElement('textarea');
                     textarea.value = email;
@@ -1797,7 +2124,7 @@ gameCards.forEach(card => {
                         document.execCommand('copy');
                         copySuccess();
                     } catch (err) {
-                        alert('复制失败，请手动复制：' + email);
+                        alert('Copy failed. Please copy manually.：' + email);
                     }
                     document.body.removeChild(textarea);
                 }
@@ -1805,14 +2132,98 @@ gameCards.forEach(card => {
         }
 
         // 统一的 ESC 关闭（菜单、弹窗）
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (isMenuOpen) closeMenu();
-                if (contactModal && contactModal.classList.contains('open')) closeContactModal();
-                if (businessModal && businessModal.classList.contains('open')) closeBusinessModal();
-            }
-        });
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        if (isMenuOpen) closeMenu();
+        if (contactModal && contactModal.classList.contains('open')) closeContactModal();
+        if (businessModal && businessModal.classList.contains('open')) closeBusinessModal();
+        if (privacyModal && privacyModal.classList.contains('open')) closePrivacyModal();
+        if (termsModal && termsModal.classList.contains('open')) closeTermsModal();
+if (aboutModal && aboutModal.classList.contains('open')) closeAboutModal();
+    }
+});
+// ---------- 关于我们弹窗 ----------
+const aboutTriggers = document.querySelectorAll('.js-about-trigger');
+const aboutModal = document.getElementById('aboutModal');
+const aboutModalClose = document.getElementById('aboutModalClose');
 
+function openAboutModal() {
+    if (!aboutModal) return;
+    aboutModal.classList.add('open');
+}
+function closeAboutModal() {
+    if (!aboutModal) return;
+    aboutModal.classList.remove('open');
+}
+
+aboutTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        openAboutModal();
+    });
+});
+
+if (aboutModalClose) {
+    aboutModalClose.addEventListener('click', closeAboutModal);
+}
+if (aboutModal) {
+    aboutModal.addEventListener('click', function(e) {
+        if (e.target === aboutModal) {
+            closeAboutModal();
+        }
+    });
+}
+// ---------- 隐私政策弹窗 ----------
+const privacyBtn = document.getElementById('privacyBtn');
+const privacyModal = document.getElementById('privacyModal');
+const privacyModalClose = document.getElementById('privacyModalClose');
+
+function openPrivacyModal() {
+    if (!privacyModal) return;
+    privacyModal.classList.add('open');
+}
+function closePrivacyModal() {
+    if (!privacyModal) return;
+    privacyModal.classList.remove('open');
+}
+if (privacyBtn) {
+    privacyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openPrivacyModal();
+    });
+}
+if (privacyModalClose) privacyModalClose.addEventListener('click', closePrivacyModal);
+if (privacyModal) {
+    privacyModal.addEventListener('click', function(e) {
+        if (e.target === privacyModal) closePrivacyModal();
+    });
+}
+
+// ---------- 用户协议弹窗 ----------
+const termsBtn = document.getElementById('termsBtn');
+const termsModal = document.getElementById('termsModal');
+const termsModalClose = document.getElementById('termsModalClose');
+
+function openTermsModal() {
+    if (!termsModal) return;
+    termsModal.classList.add('open');
+}
+function closeTermsModal() {
+    if (!termsModal) return;
+    termsModal.classList.remove('open');
+}
+if (termsBtn) {
+    termsBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openTermsModal();
+    });
+}
+if (termsModalClose) termsModalClose.addEventListener('click', closeTermsModal);
+if (termsModal) {
+    termsModal.addEventListener('click', function(e) {
+        if (e.target === termsModal) closeTermsModal();
+    });
+}
         console.log('🎮 LuckyChips游戏官网已就绪');
         console.log('   - 顶栏和底栏锁定不动 ✓');
         console.log('   - 中间内容区域可滚动 ✓');
